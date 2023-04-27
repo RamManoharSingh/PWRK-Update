@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -49,10 +50,10 @@ const Createuser = ({ mode, setCreationState, userData }) => {
   const [updateOfficeTypeId, setupdateOfficeTypeId] = useState("");
   const [updateOfficeId, setupdateOfficeId] = useState("");
   const [isActive, setisActive] = useState(true);
-  const [ipAddress, setIpAddress] = useState("0");
+  const [ipAddress, setIpAddress] = useState("");
   const [updateby, setupdateby] = useState("");
-  const [loginLockedDate, setloginLockedDate] = useState("0");
-  const [lastLoginDateTime, setlastLoginDateTime] = useState("0");
+  const [loginLockedDate, setloginLockedDate] = useState(null);
+  const [lastLoginDateTime, setlastLoginDateTime] = useState(null);
   const [value, setValue] = useState("0");
 
   const jsonData = {
@@ -61,6 +62,12 @@ const Createuser = ({ mode, setCreationState, userData }) => {
 
   // Convert the "updateby" field to an integer
   const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setIpAddress(res.data.IPv4)
+  }
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
@@ -137,7 +144,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
     getAllOfficeType();
     getAllDesignation();
     getAllState();
-
+    fetchIp();
     getAllDistt();
     // getAllAccountingStatus();
     // getAllStatus();

@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -32,13 +33,11 @@ const CreateTitle = ({ mode, ddoData }) => {
 
   // Convert the "updateby" field to an integer
   const updateByInt = parseInt(jsonData.updateby);
-
-  if (isNaN(updateByInt)) {
-    console.log("Error: Invalid value for 'updateby'");
-  } else {
-    console.log(`'updateby' as integer: ${updateByInt}`);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
   }
-
   const [updateon, setupdateon] = useState(new Date()); // initialize with current date and time
 
   const jsonString = '{"isActive": true}';
@@ -76,6 +75,11 @@ const CreateTitle = ({ mode, ddoData }) => {
       setFormValid(true)
     }
   }
+  useEffect(() => {
+    fetchIp();
+
+
+  }, [])
 
 
 
@@ -99,7 +103,7 @@ const CreateTitle = ({ mode, ddoData }) => {
         isActive: isActive,
         updateby: updateby,
         updateon: updateon,
-        ipAddress: "0",
+        ipAddress: ipAddress,
       };
 
       if (pageMode === Modes.create) {

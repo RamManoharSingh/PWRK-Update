@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -36,6 +37,12 @@ const CreateRole = ({ mode, roleData }) => {
 
   // Convert the "updateby" field to an integer
   const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
+  }
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
@@ -66,7 +73,7 @@ const CreateRole = ({ mode, roleData }) => {
     //getAllOfficeType();
     //getAllDesignation();
     getAllOfficeType();
-
+    fetchIp();
     //getAllDistt();
     // getAllAccountingStatus();
     // getAllStatus();
@@ -119,7 +126,7 @@ const CreateRole = ({ mode, roleData }) => {
         isActive: isActive,
         updateby: updateby,
         updateon: updateon,
-        ipAddress: "ipAddress",
+        ipAddress: ipAddress,
       };
 
       if (pageMode === Modes.create) {
@@ -182,7 +189,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -197,7 +204,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -212,7 +219,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -227,7 +234,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -242,7 +249,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"

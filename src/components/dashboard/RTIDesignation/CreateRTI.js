@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -34,6 +35,12 @@ const CreateRTI = ({ mode, setCreationState, rtiData }) => {
 
   // Convert the "updateby" field to an integer
   const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
+  }
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
@@ -66,6 +73,9 @@ const CreateRTI = ({ mode, setCreationState, rtiData }) => {
       setupdateon(rtiData.updateon);
     }
   }, []);
+  useEffect(() => {
+    fetchIp();
+  }, [])
 
   useEffect(() => {
     handleChangeRtiDesignation();
@@ -95,11 +105,7 @@ const CreateRTI = ({ mode, setCreationState, rtiData }) => {
       setRtiDesignationError("");
     }
 
-    if (ipAddress === "") {
-      setipAddresserror("ipAddress is Required");
-    } else {
-      setipAddresserror("");
-    }
+
 
     if (formValid) {
       const payload = {
@@ -110,7 +116,7 @@ const CreateRTI = ({ mode, setCreationState, rtiData }) => {
         isActive: isActive,
         updateby: updateby,
         updateon: updateon,
-        ipAddress: "ipAddress",
+        ipAddress: ipAddress,
       };
 
       if (pageMode === Modes.create) {
@@ -186,7 +192,7 @@ const CreateRTI = ({ mode, setCreationState, rtiData }) => {
             </p>
           )}
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"

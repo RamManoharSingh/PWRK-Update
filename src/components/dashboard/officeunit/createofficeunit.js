@@ -44,7 +44,7 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
   const [seqId, setSeqId] = useState("");
   const [updateOfficeTypeId, setUpdateOfficeTypeId] = useState("");
   const [updateOfficeId, setUpdateOfficeId] = useState();
-  const [ipAddress, setIpAddress] = useState(0);
+  const [ipAddress, setIpAddress] = useState("");
   const [updatedby, setUpdatedBy] = useState(0);
   const [formValid, setFormValid] = useState(0);
   const jsonData = {

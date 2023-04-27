@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -29,6 +30,12 @@ const CreateState = ({ mode, stateData }) => {
 
   // Convert the "updateby" field to an integer
   const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
+  }
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
@@ -58,6 +65,12 @@ const CreateState = ({ mode, stateData }) => {
       setupdateby(stateData.updateby);
       setupdateon(stateData.updateon);
     }
+  }, []);
+
+
+
+  useEffect(() => {
+    fetchIp();
   }, []);
   useEffect(() => {
     handleChangeCountry();
@@ -107,7 +120,7 @@ const CreateState = ({ mode, stateData }) => {
         isActive: isActive,
         updateby: updateby,
         updateon: updateon,
-        ipAddress: "ipAddress",
+        ipAddress: ipAddress,
       };
 
       if (pageMode === Modes.create) {
@@ -156,7 +169,7 @@ const CreateState = ({ mode, stateData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{countryError}</p>
           )}
           <input
-          autocomplete="off"
+            autocomplete="off"
             required="this field required"
             type="email"
             value={country}
@@ -178,7 +191,7 @@ const CreateState = ({ mode, stateData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{stateError}</p>
           )}
           <input
-          autocomplete="off"
+            autocomplete="off"
             required="this field required"
             type="email"
             value={stateName}
