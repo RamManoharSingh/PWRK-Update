@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -35,6 +36,12 @@ const CreateOfficeType = ({ mode, setCreationState, officeTypeData }) => {
 
   // Convert the "updateby" field to an integer
   const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
+  }
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
@@ -67,6 +74,12 @@ const CreateOfficeType = ({ mode, setCreationState, officeTypeData }) => {
       setupdateon(officeTypeData.updateon);
     }
   }, []);
+
+  useEffect(() => {
+
+    fetchIp();
+  }, []);
+
   useEffect(() => {
     handleChangeOfficeTypeName();
   }, [officeTypeName])
@@ -101,11 +114,7 @@ const CreateOfficeType = ({ mode, setCreationState, officeTypeData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (officeTypeName.length < 3 ||
-      officeTypeName.length > 150) {
-      setOfficeTypeNameError("Office Type Name must be between 3 to 150 words");
-
-    } else if (officeTypeName === "") {
+    if (officeTypeName === "") {
       setOfficeTypeNameError("Office Type Name is Required");
     }
     else {
@@ -118,12 +127,7 @@ const CreateOfficeType = ({ mode, setCreationState, officeTypeData }) => {
     } else {
       setOfficeTypeError("");
     }
-    if (officeTypeNameShort.length < 3 ||
-      officeTypeNameShort.length > 50) {
-      setOfficeTypeNameShortError("office Type Short Name must be between 3 to 50 words");
-      setFormValid(false)
-    }
-    else if (officeTypeNameShort === "") {
+    if (officeTypeNameShort === "") {
       setOfficeTypeNameShortError("Office Short is Required");
     } else {
       setOfficeTypeNameShortError("");
@@ -195,6 +199,7 @@ const CreateOfficeType = ({ mode, setCreationState, officeTypeData }) => {
             </p>
           )}
           <input
+            autocomplete="off"
             required="this field required"
             type="number"
             value={officeTypeId}
@@ -218,6 +223,7 @@ const CreateOfficeType = ({ mode, setCreationState, officeTypeData }) => {
             </p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -240,6 +246,7 @@ const CreateOfficeType = ({ mode, setCreationState, officeTypeData }) => {
             </p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -265,7 +272,7 @@ const CreateOfficeType = ({ mode, setCreationState, officeTypeData }) => {
             Is Active
           </label>
         </div>
-        <div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             Ip Address
           </label>
@@ -283,7 +290,7 @@ const CreateOfficeType = ({ mode, setCreationState, officeTypeData }) => {
               setIpAddressError("");
             }}
           />
-        </div>
+        </div> */}
         <button
           type="button"
           onClick={handleSubmit}

@@ -110,7 +110,7 @@ const CreateRTI = ({ mode, setCreationState, rtiData }) => {
         isActive: isActive,
         updateby: updateby,
         updateon: updateon,
-        ipAddress: ipAddress,
+        ipAddress: "ipAddress",
       };
 
       if (pageMode === Modes.create) {
@@ -186,6 +186,7 @@ const CreateRTI = ({ mode, setCreationState, rtiData }) => {
             </p>
           )}
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -230,7 +231,7 @@ const CreateRTI = ({ mode, setCreationState, rtiData }) => {
             IsActive
           </label>
         </div>
-        <div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             ipAddress
           </label>
@@ -248,7 +249,7 @@ const CreateRTI = ({ mode, setCreationState, rtiData }) => {
               setipAddresserror("");
             }}
           />
-        </div>
+        </div> */}
         <button
           type="button"
           onClick={handleSubmit}

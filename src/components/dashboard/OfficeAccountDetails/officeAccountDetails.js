@@ -531,7 +531,7 @@ export default function EnhancedTable() {
                       <TableCell align="center">{row.bankName}</TableCell>
                       <TableCell align="center">{row.bankAddress}</TableCell>
                       <TableCell align="center">{row.bankIFSC}</TableCell>
-                      <TableCell align="center">{row.isActive}</TableCell>
+                      <TableCell align="center">{row.isActive ? "Yes" : "No"}</TableCell>
                       <TableCell align="center">{row.updateBy}</TableCell>
                       <TableCell align="center">
                         {row.updateOfficeTypeId}

@@ -74,12 +74,7 @@ const headCells = [
     disablePadding: false,
     label: "Sr No",
   },
-  {
-    id: "officeTypeId",
-    numeric: true,
-    disablePadding: false,
-    label: "Office Type ID",
-  },
+
   {
     id: "officeTypeName",
     numeric: true,
@@ -213,39 +208,16 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     let tempData = baseApiData.map((ele) => {
-      if (!ele.title) ele.title = "";
-      if (!ele.employeeID) ele.employeeID = 0;
-      if (!ele.bcNumber) ele.bcNumber = "";
-      if (!ele.firstName) ele.firstName = "";
-      if (!ele.lastName) ele.lastName = "";
-      if (!ele.bcResourceNumber) ele.bcResourceNumber = "";
-      if (!ele.telephone) ele.telephone = "";
-      if (!ele.email) ele.email = "";
-      if (!ele.initials) ele.initials = "";
-      if (!ele.employmentStatusName) ele.employmentStatusName = "";
-      if (!ele.techniques) ele.techniques = "";
-      if (!ele.linkToUrlSubjectMapNDT) ele.linkToUrlSubjectMapNDT = "";
-      if (!ele.linkToUrlSubjectMapWeldingN3)
-        ele.linkToUrlSubjectMapWeldingN3 = "";
+      if (!ele.officeTypeName) ele.officeTypeName = "";
+      if (!ele.officeTypeNameShort) ele.officeTypeNameShort = 0;
       if (!ele.competenceMatrixData) ele.competenceMatrixData = [];
       return ele;
     });
     let lsearchText = searchValue.toLowerCase();
     let filteredData = tempData.filter(
       (x) =>
-        x.title.toLowerCase().includes(lsearchText) ||
-        x.firstName.toLowerCase().includes(lsearchText) ||
-        x.lastName.toLowerCase().includes(lsearchText) ||
-        x.email.toLowerCase().includes(lsearchText) ||
-        x.initials.toLowerCase().includes(lsearchText) ||
-        x.employmentStatusName.toLowerCase().includes(lsearchText) ||
-        x.techniques.toLowerCase().includes(lsearchText) ||
-        x.linkToUrlSubjectMapNDT.toLowerCase().includes(lsearchText) ||
-        x.linkToUrlSubjectMapWeldingN3.toLowerCase().includes(lsearchText) ||
-        x.bcNumber.includes(lsearchText) ||
-        x.employeeID.includes(searchValue) ||
-        x.bcResourceNumber.includes(lsearchText) ||
-        x.telephone.includes(lsearchText) ||
+        x.officeTypeName.toLowerCase().includes(lsearchText) ||
+        x.officeTypeNameShort.toLowerCase().includes(lsearchText) ||
         x.competenceMatrixData.filter((e) =>
           e.name.toLowerCase().includes(lsearchText)
         ).length > 0
@@ -440,15 +412,7 @@ export default function EnhancedTable() {
                           }}
                         />
                       </TableCell> */}
-                      <TableCell
-                        align="center"
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.officeTypeId}
-                      </TableCell>
+
                       <TableCell
                         align="center"
                         component="th"

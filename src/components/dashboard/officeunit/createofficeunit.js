@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -11,14 +12,19 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import { DatePicker } from "antd";
 
+import Autocomplete from '@mui/material/Autocomplete';
+
 const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
   const location = useLocation();
 
   //   const [designationId, setdesignationId] = useState(0);
   const [pageMode, setPageMode] = useState("create");
   const [officeUnitId, setOfficeUnitId] = useState(0);
-  const [officeTpyeId, setOfficeTypeId] = useState("");
-  const [officeTpyeIdError, setOfficeTypeIdError] = useState("");
+  const [officeTypeId, setOfficeTypeId] = useState("");
+  const [officeTypeDData, setOfficeTypeDData] = useState([]);
+  const [officeDData, setOfficeDData] = useState([]);
+  const [officeTypeError, setOfficeTypeError] = useState("");
+  const [officeTypeIdError, setOfficeTypeIdError] = useState("");
   const [officeUnitError, setOfficeUnitError] = useState("");
   const [officeId, setOfficeId] = useState();
   const [designationId, setDesignationId] = useState();
@@ -51,6 +57,12 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
   };
   // Convert the "updateby" field to an integer
   const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setIpAddress(res.data.IPv4)
+  }
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
@@ -67,6 +79,26 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
     );
     SetDesignationDData(result.data);
   };
+  const handleOfficeTypeChange = (event) => {
+    setOfficeTypeId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllOfficeType = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}OfficeType/GetOfficeType`
+    );
+    setOfficeTypeDData(result.data);
+  };
+  const handleOfficeChange = (event) => {
+    setOfficeId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllOffice = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}Office/GetOffice`
+    );
+    setOfficeDData(result.data);
+  };
   const [updateon, setupdateon] = useState(new Date()); // initialize with current date and time
 
   const jsonString = '{"isActive": true}';
@@ -79,18 +111,13 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
 
   useEffect(() => {
     // getAllTitle();
-    //getAllOfficeType();
+    getAllOfficeType();
+    getAllOffice();
     getAllDesignation();
-    //getAllState();
+    fetchIp();
 
-    //getAllDistt();
-    // getAllAccountingStatus();
-    // getAllStatus();
-    // setDepartmentByPayerDropdownData(departmentByPayer);
-    // setContactNoWarningDropdownData(contactNoWarning);
-    // setContactNoMattersDropdownData(contactNoMatters);
-    // setContactNoReportsDropdownData(contactNoReports);
-    // setStatusDropdownData(status);
+
+
   }, []);
 
   useEffect(() => {
@@ -99,7 +126,7 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
     setPageMode(mode);
 
     if (mode === Modes.edit) {
-      setOfficeTypeId(officeUnitData.officeTpyeId);
+      setOfficeTypeId(officeUnitData.officeTypeId);
       setOfficeUnitId(officeUnitData.officeUnitId);
       setOfficeId(officeUnitData.officeId);
       setDesignationId(officeUnitData.designationId);
@@ -111,7 +138,7 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
       setlatitude(officeUnitData.latitude);
       setComment(officeUnitData.comment);
       setSeqId(officeUnitData.seqId);
-      setUpdateOfficeTypeId(officeUnitData.officeTpyeId);
+      setUpdateOfficeTypeId(officeUnitData.officeTypeId);
       setUpdateOfficeId(officeUnitData.updateOfficeId);
       setIpAddress(officeUnitData.ipAddress);
       setUpdatedBy(officeUnitData.updatedby);
@@ -123,7 +150,7 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
 
   const handleContactChange = () => {
     if (!contactNo) return;
-    if (contactNo.length <= 8 || contactNo.length >= 10) {
+    if (contactNo.length <= 7 || contactNo.length >= 11) {
       setContactError("Invalid Mobile Number(Mobile Number  must be 8 to 10 Characters)");
     }
     else {
@@ -225,7 +252,7 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
     if (formValid) {
       const payload = {
         officeUnitId: officeUnitId,
-        officeTpyeId: officeTpyeId,
+        officeTypeId: officeTypeId,
         officeId: officeId,
         designationId: designationId,
         unitName: unitName,
@@ -238,7 +265,7 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
         seqId: seqId,
         updateOfficeTypeId: updateOfficeTypeId,
         updateOfficeId: updateOfficeId,
-        ipAddress: "0",
+        ipAddress: ipAddress,
         updatedOn: updateon,
         updatedBy: updatedby,
       };
@@ -283,41 +310,41 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
         <hr />
         <h1>{pageMode === Modes.create ? "Add New" : "Edit"} Office Unit</h1>
         <div className="mb-3 A1">
-          <label for="exampleFormControlInput1" className="form-label" required>
-            Office Type Id
-          </label>
-          {officeUnitError && (
-            <p style={{ color: "red", fontSize: "15px" }}>*{officeUnitError}</p>
-          )}
-          <input
-            required="this field required"
-            type="email"
-            value={officeTpyeId}
-            onChange={(e) => {
-              setOfficeTypeId(e.target.value);
-              setOfficeTypeIdError("");
-            }}
-            className="form-control"
-            id="exampleFormControlInput1"
-            placeholder="Enter value here"
-          />
-        </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
-            Office Id
+          <label htmlFor="inputEmail3" className="form-label">
+            Office Type
           </label>
 
-          <input
-            placeholder="enter value here"
-            type="text"
-            class="form-control"
-            id="inputEmail3"
-            value={officeId}
-            onChange={(e) => setOfficeId(e.target.value)}
-          />
+          <Select
+
+            value={officeTypeId}
+            onChange={handleOfficeTypeChange}
+            inputProps={{ "aria-label": "Without label" }}
+            className="form-control"
+          >
+            {officeTypeDData.map((ele) => {
+              return <MenuItem value={ele.officeTypeId}>{ele.officeTypeName}</MenuItem>;
+            })}
+          </Select>
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
+            Office
+          </label>
+
+          <Select
+
+            value={officeId}
+            onChange={handleOfficeChange}
+            inputProps={{ "aria-label": "Without label" }}
+            className="form-control"
+          >
+            {officeDData.map((ele) => {
+              return <MenuItem value={ele.officeId}>{ele.officeName}</MenuItem>;
+            })}
+          </Select>
+        </div>
+        {/* <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Designation
           </label>
 
@@ -332,18 +359,34 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
               return <MenuItem value={ele.designationId}>{ele.designationName}</MenuItem>;
             })}
           </Select>
+        </div> */}
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
+            Designation
+          </label>
+          <Autocomplete
+            onChange={handleDesignationChange}
+            disablePortal
+            id="combo-box-demo"
+            sx={{ width: 600 }}
+            options={designationDData}
+            getOptionLabel={(ele) => ele.designationName}
+            renderInput={(params) => <TextField {...params} label="Choose the designation" />}
+          />
+
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Unit Name
           </label>
           {unitNameError && (
             <p style={{ color: "red", fontSize: "15px" }}>*{unitNameError}</p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={unitName}
             onChange={(e) => {
@@ -352,17 +395,18 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
             }}
           />
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Unit Address
           </label>
           {unitAddressError && (
             <p style={{ color: "red", fontSize: "15px" }}>*{unitAddressError}</p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={unitAddress}
             onChange={(e) => {
@@ -371,33 +415,35 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
             }}
           />
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Email Id
           </label>
           {emailError && (
             <p style={{ color: "red", fontSize: "15px" }}>*{emailError}</p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={emailId}
             onChange={(e) => { setEmailId(e.target.value); setEmailError(""); handleEmailChange() }}
           />
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Contact No
           </label>
           {contactError && (
             <p style={{ color: "red", fontSize: "15px" }}>*{contactError}</p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="number"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={contactNo}
             onChange={(e) => {
@@ -406,46 +452,49 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
             }}
           />
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Longitude
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={longitude}
             onChange={(e) => setLongitude(e.target.value)}
           />
         </div>
 
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Latitude
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={latitude}
             onChange={(e) => setlatitude(e.target.value)}
           />
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Comment
           </label>
           {commentError && (
             <p style={{ color: "red", fontSize: "15px" }}>*{commentError}</p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={comment}
             onChange={(e) => {
@@ -454,43 +503,46 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
             }}
           />
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Seq Id
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={seqId}
             onChange={(e) => setSeqId(e.target.value)}
           />
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Update Office Type Id
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={updateOfficeTypeId}
             onChange={(e) => setUpdateOfficeTypeId(e.target.value)}
           />
         </div>
-        <div class="mb-3 A1">
-          <label for="inputEmail3" class="form-label">
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
             Update Office Id
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputEmail3"
             value={updateOfficeId}
             onChange={(e) => setUpdateOfficeId(e.target.value)}
@@ -504,7 +556,7 @@ const CreateOfficeUnit = ({ mode, setCreationState, officeUnitData }) => {
           {pageMode === Modes.create ? "Save" : "Update"}
         </button>
         &nbsp;
-        <button class="btn btn-secondary me-md-5" type="button">
+        <button className="btn btn-secondary me-md-5" type="button">
           <Link
             to={routeNames.OFFICEUNIT}
             style={{

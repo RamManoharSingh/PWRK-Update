@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -47,7 +48,15 @@ const CreateTitle = ({ mode, titleData }) => {
 
   const navigate = useNavigate();
 
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
+  }
+
+
   useEffect(() => {
+    fetchIp();
     mode = location.state.mode;
     titleData = location.state.titleData;
     setPageMode(mode);
@@ -84,54 +93,49 @@ const CreateTitle = ({ mode, titleData }) => {
     }
     else if (titleName.length > 50) {
       setTitleNameError("Designation Name must be between 50 words");
-    } else
+    } else if (ipAddress !== '') {
+      console.log(ipAddress, "Ip Address")
+      if (formValid) {
+        const payload = {
+          titleId: titleId,
+          titleName: titleName,
+          isActive: isActive,
+          updateby: updateby,
+          updateon: updateon,
+          ipAddress: ipAddress,
+        };
 
-      if (ipAddress === "") {
-        setipAddressError("IP Address is Required");
-      } else {
-        setipAddressError("");
-      }
+        if (pageMode === Modes.create) {
+          Axios.post(
+            `${process.env.REACT_APP_API_BASE_URL}Title/SetTitle`,
+            payload
+          )
 
-    if (formValid) {
-      const payload = {
-        titleId: titleId,
-        titleName: titleName,
-        isActive: isActive,
-        updateby: updateby,
-        updateon: updateon,
-        ipAddress: ipAddress,
-      };
+            .then((response) => {
+              console.log(response.data);
+              Swal.fire("Save", "Title Saved Sucessfully", "success");
 
-      if (pageMode === Modes.create) {
-        Axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}Title/SetTitle`,
-          payload
-        )
+              navigate(routeNames.TITLE);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else if (pageMode === Modes.edit) {
+          payload["titleId"] = location.state.titleData.titleId;
+          Axios.post(
+            `${process.env.REACT_APP_API_BASE_URL}Title/SetTitle`,
+            payload
+          )
 
-          .then((response) => {
-            console.log(response.data);
-            Swal.fire("Save", "Title Saved Sucessfully", "success");
-
-            navigate(routeNames.TITLE);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else if (pageMode === Modes.edit) {
-        payload["titleId"] = location.state.titleData.titleId;
-        Axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}Title/SetTitle`,
-          payload
-        )
-
-          .then((response) => {
-            console.log(response.data);
-            Swal.fire("Save", "Title Updated Sucessfully", "success");
-            navigate(routeNames.TITLE);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+            .then((response) => {
+              console.log(response.data);
+              Swal.fire("Save", "Title Updated Sucessfully", "success");
+              navigate(routeNames.TITLE);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       }
     }
   };
@@ -148,6 +152,7 @@ const CreateTitle = ({ mode, titleData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{titleNameError}</p>
           )}
           <input
+          autocomplete="off"
             required="this field required"
             type="email"
             value={titleName}
@@ -224,7 +229,7 @@ const CreateTitle = ({ mode, titleData }) => {
             onChange={(e) => setupdateon(e.target.value)}
           />
         </div> */}
-
+        {/* 
         <div className="mb-3 A1">
           <label for="exampleFormControlInput1" className="form-label" required>
             IP Address
@@ -245,7 +250,7 @@ const CreateTitle = ({ mode, titleData }) => {
             id="exampleFormControlInput1"
             placeholder="Enter value here"
           />
-        </div>
+        </div> */}
 
         <button
           type="button"

@@ -186,7 +186,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
     handleChange();
   }, [mobileNo2])
   const handleChange = () => {
-    if (mobileNo2.length !== 10) {
+    if (mobileNo2.length >= 9) {
       setMobileNo2Error("Mobile Number  must be of 10 letter");
     } else {
       setMobileNo2Error("");
@@ -300,6 +300,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <input
+            autocomplete="off"
             required="this field required"
             type="email"
             value={empId}
@@ -366,6 +367,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -407,6 +409,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             Mobile No 1
           </label>
           <input
+            autocomplete="off"
             disabled
             placeholder="enter value here"
             type="text"
@@ -426,6 +429,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <input
+            autocomplete="off"
             min="0"
             max="10"
             placeholder="enter value here"
@@ -444,6 +448,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
           </label>
 
           <input
+            autocomplete="off"
             disabled
             placeholder="enter value here"
             type="text"
@@ -463,6 +468,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -517,6 +523,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="number"
             class="form-control"
@@ -534,6 +541,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -547,6 +555,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"

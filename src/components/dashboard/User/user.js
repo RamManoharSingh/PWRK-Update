@@ -158,6 +158,12 @@ const headCells = [
     disablePadding: false,
     label: "Update Office Type ID",
   },
+  {
+    id: "action",
+    numeric: true,
+    disablePadding: false,
+    label: "Action",
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -436,7 +442,7 @@ export default function EnhancedTable() {
           }}
           onChange={(e) => setSearchValue(e.target.value)}
         ></input>
-        {/*<button
+        <button
           className="btn btn-primary"
           onClick={() =>
             navigate(routeNames.CREATEUSER, {
@@ -446,7 +452,7 @@ export default function EnhancedTable() {
           }
         >
           Add User
-        </button>*/}
+        </button>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -520,7 +526,7 @@ export default function EnhancedTable() {
                         {row.titleId}
                       </TableCell>
 
-                      <TableCell align="center">{row.userId}</TableCell>
+                      <TableCell align="center">{row.userName}</TableCell>
                       <TableCell align="center">{row.designationId}</TableCell>
                       <TableCell align="center">{row.mobileNo1}</TableCell>
                       <TableCell align="center">{row.mobileNo2}</TableCell>
@@ -534,10 +540,10 @@ export default function EnhancedTable() {
                         {row.updateOfficeTypeId}
                       </TableCell>
 
-                      {/* <TableCell>
+                      <TableCell>
                         <div style={{ display: "flex" }}>
                           <div className="Edit">
-                              <button
+                            <button
                               className="btn
                           btn-primary btn-xxl"
                               style={{
@@ -563,7 +569,7 @@ export default function EnhancedTable() {
                             <DeleteTwoToneIcon />
                           </button>
                         </div>
-                      </TableCell>*/}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -21,7 +22,9 @@ const CreateOfficeAccountDetails = ({
   //   const [designationId, setdesignationId] = useState(0);
   const [pageMode, setPageMode] = useState("create");
   const [officeId, setOfficeId] = useState(0);
+  const [officeDData, setOfficeDData] = useState([]);
   const [ddoTypeId, setDdoTypeId] = useState(0);
+  const [ddoTypeDData, setDdoTypeDData] = useState([]);
   const [ddoCode, setDdoCode] = useState("");
   const [ddoCodeName, setDdoCodeName] = useState("");
   const [pan, setPan] = useState("");
@@ -42,7 +45,27 @@ const CreateOfficeAccountDetails = ({
   };
 
   // Convert the "updateby" field to an integer
+
+  const handleOfficeChange = (event) => {
+    setOfficeId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllOffice = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}Office/GetOffice`
+    );
+    setOfficeDData(result.data);
+  };
+
+
+
   const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setIpAddress(res.data.IPv4)
+  }
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
@@ -50,12 +73,44 @@ const CreateOfficeAccountDetails = ({
     console.log(`'updateby' as integer: ${updateByInt}`);
   }
 
+
+
+  const handleDDOTypeChange = (event) => {
+    setDdoTypeId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllDDOType = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}DDOType/GetDDOType`
+    );
+    setDdoTypeDData(result.data);
+  };
+
   const jsonString = '{"isActive": true}';
   const jsonObject = JSON.parse(jsonString);
 
   console.log(jsonObject.isActive);
 
   const navigate = useNavigate();
+
+
+
+
+  useEffect(() => {
+    // getAllTitle();
+    getAllOffice();
+    //getAllDesignation();
+    getAllDDOType();
+    fetchIp();
+    //getAllDistt();
+    // getAllAccountingStatus();
+    // getAllStatus();
+    // setDepartmentByPayerDropdownData(departmentByPayer);
+    // setContactNoWarningDropdownData(contactNoWarning);
+    // setContactNoMattersDropdownData(contactNoMatters);
+    // setContactNoReportsDropdownData(contactNoReports);
+    // setStatusDropdownData(status);
+  }, []);
 
   useEffect(() => {
     mode = location.state.mode;
@@ -157,6 +212,7 @@ const CreateOfficeAccountDetails = ({
             <p style={{ color: "red", fontSize: "15px" }}>*{moduleError}</p>
           )} */}
           <input
+            autocomplete="off"
             required="this field required"
             type="email"
             value={ddoCode}
@@ -174,6 +230,7 @@ const CreateOfficeAccountDetails = ({
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -188,6 +245,7 @@ const CreateOfficeAccountDetails = ({
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -202,6 +260,7 @@ const CreateOfficeAccountDetails = ({
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -216,6 +275,7 @@ const CreateOfficeAccountDetails = ({
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -230,6 +290,7 @@ const CreateOfficeAccountDetails = ({
           </label>
 
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -256,7 +317,7 @@ const CreateOfficeAccountDetails = ({
             Is Active
           </label>
         </div>
-        <div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             IP Address
           </label>
@@ -269,7 +330,7 @@ const CreateOfficeAccountDetails = ({
             value={ipAddress}
             onChange={(e) => setIpAddress(e.target.value)}
           />
-        </div>
+        </div> */}
         <button
           type="button"
           onClick={handleSubmit}

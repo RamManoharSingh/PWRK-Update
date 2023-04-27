@@ -7,7 +7,7 @@ function Captcha(props) {
     username: "",
   });
 
-  const characters = "abc123";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890@#%";
   function generateString(length) {
     let result = "";
     const charactersLength = characters.length;

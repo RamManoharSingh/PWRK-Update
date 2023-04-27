@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -20,10 +21,10 @@ const CreateOfficeLevel = ({ mode, setCreationState, officeLevelData }) => {
   const [id, setId] = useState(0);
   const [officeTypeid, setOfficeTypeId] = useState(0);
   const [officeTypeDropdownData, setOfficeTypeDropdownData] = useState([]);
-  
+
   const [officeLevelId, setOfficeLevelId] = useState(0);
   const [officeLevel, setOfficeLevel] = useState("");
- 
+
   const [ipAddress, setIpAddress] = useState("");
   const [updateBy, setUpdateBy] = useState(0);
   const [updateOn, setUpdateOn] = useState(new Date()); // initialize with current date and time
@@ -35,14 +36,18 @@ const CreateOfficeLevel = ({ mode, setCreationState, officeLevelData }) => {
 
   // Convert the "updateby" field to an integer
   const updateByInt = parseInt(jsonData.updateby);
-
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setIpAddress(res.data.IPv4)
+  }
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
   } else {
     console.log(`'updateby' as integer: ${updateByInt}`);
   }
 
- 
+
   const jsonString = '{"isActive": true}';
   const jsonObject = JSON.parse(jsonString);
 
@@ -57,34 +62,39 @@ const CreateOfficeLevel = ({ mode, setCreationState, officeLevelData }) => {
   };
 
   useEffect(() => {
-   
+
     getAllOfficeType();
-   
-    
+
+
   }, []);
 
   useEffect(() => {
-    
+
     mode = location.state.mode;
     officeLevelData = location.state.officeLevelData;
     setPageMode(mode);
 
     if (mode === Modes.edit) {
-        setId(officeLevelData.id);
-        setOfficeTypeId(officeLevelData.officeTypeid);
-        setOfficeLevelId(officeLevelData.officeLevelId);
-        setOfficeLevel(officeLevelData.officeLevel);
-      
+      setId(officeLevelData.id);
+      setOfficeTypeId(officeLevelData.officeTypeid);
+      setOfficeLevelId(officeLevelData.officeLevelId);
+      setOfficeLevel(officeLevelData.officeLevel);
+
       setIpAddress(officeLevelData.ipAddress);
       setUpdateBy(officeLevelData.updateBy);
       setUpdateOn(officeLevelData.updateOn);
     }
   }, []);
 
+
+  useEffect(() => {
+    fetchIp();
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    
+
 
     if (true) {
       const payload = {
@@ -95,7 +105,7 @@ const CreateOfficeLevel = ({ mode, setCreationState, officeLevelData }) => {
 
         updateBy: updateBy,
         updateOn: updateOn,
-        ipAddress: "0",
+        ipAddress: ipAddress,
       };
 
       if (pageMode === Modes.create) {
@@ -138,12 +148,13 @@ const CreateOfficeLevel = ({ mode, setCreationState, officeLevelData }) => {
         <h1>{pageMode === Modes.create ? "Add New" : "Edit"} Office Level</h1>
         <div className="mb-3 A1">
           <label for="exampleFormControlInput1" className="form-label" required>
-          Office Level Name
+            Office Level Name
           </label>
           {/* {moduleError && (
             <p style={{ color: "red", fontSize: "15px" }}>*{moduleError}</p>
           )} */}
           <input
+            autocomplete="off"
             required="this field required"
             type="email"
             value={officeLevel}
@@ -173,8 +184,8 @@ const CreateOfficeLevel = ({ mode, setCreationState, officeLevelData }) => {
             })}
           </Select>
         </div>
-        
-       
+
+
         <button
           type="button"
           onClick={handleSubmit}

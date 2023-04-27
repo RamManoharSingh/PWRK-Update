@@ -75,18 +75,8 @@ const headCells = [
     disablePadding: false,
     label: "S No",
   },
-  {
-    id: "roleId",
-    numeric: true,
-    disablePadding: false,
-    label: "Role Id",
-  },
-  {
-    id: "officeType Id",
-    numeric: true,
-    disablePadding: false,
-    label: "OfficeType Id",
-  },
+ 
+ 
   {
     id: "roleName",
     numeric: true,
@@ -94,42 +84,17 @@ const headCells = [
     label: "Role Name",
   },
 
-  {
-    id: "maker",
-    numeric: true,
-    disablePadding: false,
-    label: "Maker",
-  },
-  {
-    id: "checker",
-    numeric: true,
-    disablePadding: false,
-    label: "Checker",
-  },
-  {
-    id: "approver",
-    numeric: true,
-    disablePadding: false,
-    label: "Approver",
-  },
-  {
-    id: "viewer",
-    numeric: true,
-    disablePadding: false,
-    label: "Viewer",
-  },
+  
+  
+  
+  
   {
     id: "isActive",
     numeric: true,
     disablePadding: false,
     label: "IsActive",
   },
-  {
-    id: "updateby",
-    numeric: true,
-    disablePadding: false,
-    label: "Update By",
-  },
+  
   {
     id: "updateon",
     numeric: true,
@@ -137,12 +102,7 @@ const headCells = [
     label: "Update On",
   },
 
-  {
-    id: "ipAddress",
-    numeric: true,
-    disablePadding: false,
-    label: "IPAddress",
-  },
+  
 ];
 
 function EnhancedTableHead(props) {
@@ -257,42 +217,14 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     let tempData = baseApiData.map((ele) => {
-      if (!ele.title) ele.title = "";
-      if (!ele.employeeID) ele.employeeID = 0;
-      if (!ele.bcNumber) ele.bcNumber = "";
-      if (!ele.firstName) ele.firstName = "";
-      if (!ele.lastName) ele.lastName = "";
-      if (!ele.bcResourceNumber) ele.bcResourceNumber = "";
-      if (!ele.telephone) ele.telephone = "";
-      if (!ele.email) ele.email = "";
-      if (!ele.initials) ele.initials = "";
-      if (!ele.employmentStatusName) ele.employmentStatusName = "";
-      if (!ele.techniques) ele.techniques = "";
-      if (!ele.linkToUrlSubjectMapNDT) ele.linkToUrlSubjectMapNDT = "";
-      if (!ele.linkToUrlSubjectMapWeldingN3)
-        ele.linkToUrlSubjectMapWeldingN3 = "";
-      if (!ele.competenceMatrixData) ele.competenceMatrixData = [];
+      if (!ele.roleName) ele.roleName = "";
+     
       return ele;
     });
     let lsearchText = searchValue.toLowerCase();
     let filteredData = tempData.filter(
       (x) =>
-        x.title.toLowerCase().includes(lsearchText) ||
-        x.firstName.toLowerCase().includes(lsearchText) ||
-        x.lastName.toLowerCase().includes(lsearchText) ||
-        x.email.toLowerCase().includes(lsearchText) ||
-        x.initials.toLowerCase().includes(lsearchText) ||
-        x.employmentStatusName.toLowerCase().includes(lsearchText) ||
-        x.techniques.toLowerCase().includes(lsearchText) ||
-        x.linkToUrlSubjectMapNDT.toLowerCase().includes(lsearchText) ||
-        x.linkToUrlSubjectMapWeldingN3.toLowerCase().includes(lsearchText) ||
-        x.bcNumber.includes(lsearchText) ||
-        x.employeeID.includes(searchValue) ||
-        x.bcResourceNumber.includes(lsearchText) ||
-        x.telephone.includes(lsearchText) ||
-        x.competenceMatrixData.filter((e) =>
-          e.name.toLowerCase().includes(lsearchText)
-        ).length > 0
+        x.roleName.toLowerCase().includes(lsearchText) 
     );
     console.log(filteredData, "filtered data");
     console.log("searchValue", searchValue);
@@ -485,36 +417,16 @@ export default function EnhancedTable() {
                       >
                         {row.srNo}
                       </TableCell>
-                      <TableCell
-                        align="center"
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.roleId}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.officeTypeId}
-                      </TableCell>
+                     
 
                       <TableCell align="center">{row.roleName}</TableCell>
-                      <TableCell align="center">{row.maker}</TableCell>
-                      <TableCell align="center">{row.checker}</TableCell>
-                      <TableCell align="center">{row.approver}</TableCell>
-                      <TableCell align="center">{row.viewer}</TableCell>
+                     
                       <TableCell align="center">
                         {row.isActive ? "Yes" : "No"}
                       </TableCell>
-                      <TableCell align="center">{row.updateby}</TableCell>
+                   
                       <TableCell align="center">{row.updateon}</TableCell>
-                      <TableCell align="center">{row.ipAddress}</TableCell>
+                      
                       <TableCell>
                         <div style={{ display: "flex" }}>
                           <div className="Edit">

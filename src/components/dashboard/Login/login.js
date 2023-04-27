@@ -7,21 +7,21 @@ import { Alert } from "react-bootstrap";
 import { red } from "@mui/material/colors";
 import Password from "antd/es/input/Password";
 import { header } from "../../common/Header/header";
-
 import Captcha from "../Captcha/Captcha";
 
 const Login = (props) => {
   const [captcha, setCaptcha] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [userName, setUserName] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const validateEmail = (email) => {
-    return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-  };
+  const [loginId, setLoginId] = useState("");
+  // const validateEmail = (email) => {
+  //   return email.match(
+  //     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  //   );
+  // };
   const [passwordShown, setPasswordShown] = useState(true);
   const [loading, setLoading] = useState(false);
   let captchaVerified;
@@ -31,11 +31,12 @@ const Login = (props) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     let payload = {
-      emailID: email,
+      userName: userName,
       password: password,
+      // loginId: loginId
     };
 
-    if (validateEmail(email) && password != "" && captchaVerified) {
+    if (password != "" && captchaVerified) {
       let result = await axios
         .post(`${process.env.REACT_APP_API_BASE_URL}Account/SingIn`, payload)
         .then((res) => {
@@ -49,9 +50,23 @@ const Login = (props) => {
           if (res.data && res.data.token) {
             let token = res.data.token;
             let userId = res.data.userID;
+            const RoleId = res.data.roleId;
+            let loginId = res.data.loginId;
+            let userName = res.data.userName;
             localStorage.setItem("token", token);
             localStorage.setItem("UserId", userId);
+            localStorage.setItem("UserName", userName);
+            localStorage.setItem("RoleId", RoleId);
+            localStorage.setItem("LoginId", loginId);
             // navigate("/");
+            // if(roleId===1){
+
+            // }
+            // else if(roleId===2){
+
+            // }else{
+
+            // }
             navigate(routeNames.DASHBOARD)
           }
         })
@@ -59,16 +74,16 @@ const Login = (props) => {
           // setError(err.message);
         });
     } else {
-      if (email != "") {
-        if (validateEmail(email) == null) {
-          setError("Please Enter Valid Email Address");
-        } else if (password === "") {
-          setError("Please Enter your Password");
-        } else if (!captchaVerified) {
-          setError("Please Verify Captcha");
-        }
-      } else {
-        setError("Please Enter Email and Password");
+      if (userName === "") {
+        setError("Please Enter User Name");
+      }
+      else if (password === "") {
+        setError("Please Enter your Password");
+      } else if (!captchaVerified) {
+        setError("Please Verify Captcha");
+      }
+      else {
+        setError("Please Enter user  Name and Password");
       }
     }
     // else if (email == "") {
@@ -105,13 +120,13 @@ const Login = (props) => {
             <div></div>
           )}
           <div className="form-group mt-3">
-            <label>Email address</label>
+            <label>User Name</label>
             <input
               type="email"
               style={{ width: 324 }}
               className="form-control mt-1"
-              placeholder="Enter email"
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter Login Id"
+              onChange={(e) => setUserName(e.target.value)}
             />
           </div>
           <div className="form-group mt-3">

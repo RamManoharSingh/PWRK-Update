@@ -148,6 +148,7 @@ const CreateTitle = ({ mode, ddoData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{ddoTypeError}</p>
           )}
           <input
+            autoComplete="off"
             required="this field required"
             type="email"
             value={ddoType}
@@ -163,11 +164,13 @@ const CreateTitle = ({ mode, ddoData }) => {
         </div>
         <div class="form-check">
           <input
-          style={{
-            marginLeft: 17,
-            width: 20,
-            height: 20
-          }}
+            autoComplete="off"
+            auto
+            style={{
+              marginLeft: 17,
+              width: 20,
+              height: 20
+            }}
             class="form-check-input"
             type="checkbox"
             checked={isActive}
@@ -176,7 +179,7 @@ const CreateTitle = ({ mode, ddoData }) => {
             id="defaultCheck1"
           />
           <label style={{ marginLeft: 46, paddingTop: 4 }} class="form-check-label" for="defaultCheck1">
-            IsActive
+            Is Active
           </label>
         </div>
         <button

@@ -19,17 +19,34 @@ function App() {
     }
   };
   useEffect(() => {
+    function handleContextMenu(e) {
+      e.preventDefault(); // prevents the default right-click menu from appearing
+    }
+    // add the event listener to the component's root element
+    const rootElement = document.getElementById('my-component');
+    rootElement.addEventListener('contextmenu', handleContextMenu);
+    // remove the event listener when the component is unmounted
+
+    return () => {
+      rootElement.removeEventListener('contextmenu', handleContextMenu);
+    };
+  }, []);
+  useEffect(() => {
     let cuurrentRoute = location.pathname;
     if (
       !cuurrentRoute.includes(routeNames.RESETPASSWORD) &&
       !cuurrentRoute.includes(routeNames.USERRESETPASSWORD)
-      &&  !cuurrentRoute.includes(routeNames.SIGNUP)
+      && !cuurrentRoute.includes(routeNames.SIGNUP)
     ) {
       checkLogin();
     }
   }, []);
 
-  return <Router />;
+  return (<div id="mycomponent">
+    <Router />
+  </div>
+
+  )
 }
 
 export default App;

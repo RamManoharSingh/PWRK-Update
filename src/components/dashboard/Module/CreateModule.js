@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -33,7 +34,7 @@ const CreateModule = ({ mode, setCreationState, moduleData }) => {
   };
 
   // Convert the "updateby" field to an integer
-  const updateByInt = parseInt(jsonData.updateby);
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
@@ -49,6 +50,20 @@ const CreateModule = ({ mode, setCreationState, moduleData }) => {
   console.log(jsonObject.isActive);
 
   const navigate = useNavigate();
+
+  const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
+  }
+
+
+  if (isNaN(updateByInt)) {
+    console.log("Error: Invalid value for 'updateby'");
+  } else {
+    console.log(`'updateby' as integer: ${updateByInt}`);
+  }
 
   useEffect(() => {
     mode = location.state.mode;
@@ -94,7 +109,9 @@ const CreateModule = ({ mode, setCreationState, moduleData }) => {
     }
   }
 
-
+  useEffect(() => {
+    fetchIp();
+  }, [])
 
 
 
@@ -128,7 +145,7 @@ const CreateModule = ({ mode, setCreationState, moduleData }) => {
         isActive: isActive,
         updateby: updateby,
         updateon: updateon,
-        ipAddress: "0",
+        ipAddress: ipAddress,
       };
 
       if (pageMode === Modes.create) {
@@ -177,6 +194,7 @@ const CreateModule = ({ mode, setCreationState, moduleData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{moduleNameError}</p>
           )}
           <input
+            autocomplete="off"
             required="this field required"
             type="email"
             value={maduleName}
@@ -198,6 +216,7 @@ const CreateModule = ({ mode, setCreationState, moduleData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{moduleNameShortError}</p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -218,6 +237,7 @@ const CreateModule = ({ mode, setCreationState, moduleData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{moduleUrlError}</p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"

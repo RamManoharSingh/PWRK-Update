@@ -1,7 +1,9 @@
+import Autocomplete from '@mui/material/Autocomplete';
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -34,7 +36,7 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
   };
 
   // Convert the "updateby" field to an integer
-  const updateByInt = parseInt(jsonData.updateby);
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
@@ -56,6 +58,21 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
   const jsonString = '{"isActive": true}';
   const jsonObject = JSON.parse(jsonString);
 
+  const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
+  }
+
+  if (isNaN(updateByInt)) {
+    console.log("Error: Invalid value for 'updateby'");
+  } else {
+    console.log(`'updateby' as integer: ${updateByInt}`);
+  }
+
+
+
   console.log(jsonObject.isActive);
 
   const navigate = useNavigate();
@@ -65,7 +82,7 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
     //getAllOfficeType();
     //getAllDesignation();
     getAllState();
-
+    fetchIp();
     //getAllDistt();
     // getAllAccountingStatus();
     // getAllStatus();
@@ -120,11 +137,6 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
       setFormValid(true)
     }
   }
-
-
-
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -205,7 +217,7 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
       <div className="MainDiv">
         <hr />
         <h1>{pageMode === Modes.create ? "Add New" : "Edit"} District</h1>
-        <div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             State
           </label>
@@ -221,6 +233,24 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
               return <MenuItem value={ele.stateId}>{ele.stateName}</MenuItem>;
             })}
           </Select>
+        </div> */}
+        <div className="mb-3 A1">
+          <label htmlFor="inputEmail3" className="form-label">
+            State
+          </label>
+          <Autocomplete
+            onChange={handleStateChange}
+            disablePortal
+            id="combo-box-demo"
+            sx={{ width: 600 }}
+            options={stateDropdownData.map((ele) => {
+              return <MenuItem value={ele.stateId}>{ele.stateName}</MenuItem>;
+            })}
+          // getOptionLabel={(ele) => ele.stateName}
+          // renderInput={(params) => <TextField {...params} label="Choose the State" />}
+
+          />
+
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
@@ -230,6 +260,7 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{distNameError}</p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -250,6 +281,7 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{distShortNameError}</p>
           )}
           <input
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -282,11 +314,11 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
  */}
         <div class="form-check">
           <input
-          style={{
-            marginLeft: 17,
-            width: 20,
-            height: 20
-          }}
+            style={{
+              marginLeft: 17,
+              width: 20,
+              height: 20
+            }}
             class="form-check-input"
             type="checkbox"
             checked={isActive}
@@ -298,7 +330,7 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
             IsActive
           </label>
         </div>
-        <div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             ipAddress
           </label>
@@ -316,7 +348,7 @@ const CreateDistrict = ({ mode, setCreationState, districtData }) => {
               setipAddressError("");
             }}
           />
-        </div>
+        </div> */}
         <button
           type="button"
           onClick={handleSubmit}

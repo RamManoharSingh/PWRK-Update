@@ -18,6 +18,8 @@ const CreateRole = ({ mode, roleData }) => {
   const [pageMode, setPageMode] = useState("create");
   const [roleId, setRoleId] = useState(0);
   const [officeTypeId, setofficeTypeId] = useState("");
+  const [officeTypeError, setOfficeTypeError] = useState("");
+  const [officeTypeDropdownData, setOfficeTypeDropdownData] = useState([]);
   const [roleName, setRoleName] = useState("");
   const [maker, setMaker] = useState("");
   const [checker, setChecker] = useState("");
@@ -40,13 +42,40 @@ const CreateRole = ({ mode, roleData }) => {
   } else {
     console.log(`'updateby' as integer: ${updateByInt}`);
   }
-
+  const handleOfficeTypeChange = (event) => {
+    setofficeTypeId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllOfficeType = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}OfficeType/GetOfficeType`
+    );
+    setOfficeTypeDropdownData(result.data);
+    setOfficeTypeError("");
+  };
   const jsonString = '{"isActive": true}';
   const jsonObject = JSON.parse(jsonString);
 
   console.log(jsonObject.isActive);
 
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    // getAllTitle();
+    //getAllOfficeType();
+    //getAllDesignation();
+    getAllOfficeType();
+
+    //getAllDistt();
+    // getAllAccountingStatus();
+    // getAllStatus();
+    // setDepartmentByPayerDropdownData(departmentByPayer);
+    // setContactNoWarningDropdownData(contactNoWarning);
+    // setContactNoMattersDropdownData(contactNoMatters);
+    // setContactNoReportsDropdownData(contactNoReports);
+    // setStatusDropdownData(status);
+  }, []);
 
   useEffect(() => {
     mode = location.state.mode;
@@ -55,7 +84,7 @@ const CreateRole = ({ mode, roleData }) => {
     setPageMode(mode);
 
     if (mode === Modes.edit) {
-      setRoleId(roleData.roleId);
+      setRoleId(roleData.Id);
       setofficeTypeId(roleData.officeTypeId);
       setRoleName(roleData.roleName);
       setMaker(roleData.maker);
@@ -72,11 +101,11 @@ const CreateRole = ({ mode, roleData }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // if (titleName === "") {
-    //   setTitleError("Title is Required");
-    // } else {
-    //   setTitleError("");
-    // }
+    if (officeTypeId === "") {
+      setOfficeTypeError("Office Type is Required");
+    } else {
+      setOfficeTypeError("");
+    }
 
     if (true) {
       const payload = {
@@ -90,7 +119,7 @@ const CreateRole = ({ mode, roleData }) => {
         isActive: isActive,
         updateby: updateby,
         updateon: updateon,
-        ipAddress: ipAddress,
+        ipAddress: "ipAddress",
       };
 
       if (pageMode === Modes.create) {
@@ -128,25 +157,24 @@ const CreateRole = ({ mode, roleData }) => {
       <div className="MainDiv">
         <hr />
         <h1>{pageMode === Modes.create ? "Add New" : "Edit"} Role</h1>
-        <div className="mb-3 A1">
-          <label for="exampleFormControlInput1" className="form-label" required>
-            OfficeTypeId
+        <div class="mb-3 A1">
+          <label for="inputEmail3" class="form-label">
+            Office Type
           </label>
           {titleError && (
             <p style={{ color: "red", fontSize: "15px" }}>*{titleError}</p>
           )}
-          <input
-            required="this field required"
-            type="number"
+          <Select
+
             value={officeTypeId}
-            onChange={(e) => {
-              setofficeTypeId(e.target.value);
-              setTitleError("");
-            }}
+            onChange={handleOfficeTypeChange}
+            inputProps={{ "aria-label": "Without label" }}
             className="form-control"
-            id="exampleFormControlInput1"
-            placeholder="Enter value here"
-          />
+          >
+            {officeTypeDropdownData.map((ele) => {
+              return <MenuItem value={ele.officeTypeId}>{ele.officeTypeName}</MenuItem>;
+            })}
+          </Select>
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
@@ -154,6 +182,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -168,6 +197,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -182,6 +212,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -196,6 +227,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -210,6 +242,7 @@ const CreateRole = ({ mode, roleData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -236,7 +269,7 @@ const CreateRole = ({ mode, roleData }) => {
             IsActive
           </label>
         </div>
-        <div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             IP Address
           </label>
@@ -249,7 +282,7 @@ const CreateRole = ({ mode, roleData }) => {
             value={ipAddress}
             onChange={(e) => setipAddress(e.target.value)}
           />
-        </div>
+        </div> */}
         {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             ipAddress

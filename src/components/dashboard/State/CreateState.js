@@ -107,7 +107,7 @@ const CreateState = ({ mode, stateData }) => {
         isActive: isActive,
         updateby: updateby,
         updateon: updateon,
-        ipAddress: ipAddress,
+        ipAddress: "ipAddress",
       };
 
       if (pageMode === Modes.create) {
@@ -156,6 +156,7 @@ const CreateState = ({ mode, stateData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{countryError}</p>
           )}
           <input
+          autocomplete="off"
             required="this field required"
             type="email"
             value={country}
@@ -177,6 +178,7 @@ const CreateState = ({ mode, stateData }) => {
             <p style={{ color: "red", fontSize: "15px" }}>*{stateError}</p>
           )}
           <input
+          autocomplete="off"
             required="this field required"
             type="email"
             value={stateName}
@@ -208,9 +210,9 @@ const CreateState = ({ mode, stateData }) => {
             Is Active
           </label>
         </div>
-        {/*<div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
-            ipAddress
+            IP Address
           </label>
 
           <input
@@ -221,8 +223,8 @@ const CreateState = ({ mode, stateData }) => {
             value={ipAddress}
             onChange={(e) => setipAddress(e.target.value)}
           />
-        </div>
-        <div class="mb-3 A1">
+        </div> */}
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
           updateby
           </label>

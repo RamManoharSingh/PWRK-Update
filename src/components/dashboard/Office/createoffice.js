@@ -18,16 +18,20 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
   //   const [officeId, setofficeId] = useState(0);
   const [pageMode, setPageMode] = useState("create");
   const [officeId, setofficeId] = useState(0);
-  const [officeTypeId, setOfficeTypeId] = useState("");
+  const [officeTypeId, setofficeTypeId] = useState("");
+  const [officeTypeDropdownData, setOfficeTypeDropdownData] = useState([]);
   const [officeError, setofficeError] = useState("");
   const [officeName, setOfficeName] = useState("");
   const [officeNameHindi, setOfficeNameHindi] = useState("");
   const [officeCode, setOfficeCode] = useState("");
   const [address, setAddress] = useState("");
   const [stateId, setStateId] = useState("");
+  const [stateDData, setStateDData] = useState([]);
   const [disttId, setDisttId] = useState("");
+  const [disttDData, setDisttDData] = useState([]);
   const [pinCode, setPinCode] = useState("");
   const [stdCode, setStdCode] = useState("");
+
   const [contactNo, setContactNo] = useState("");
   const [emailId, setEmailId] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -41,9 +45,11 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
   const [parentId4, setParentId4] = useState(0);
   const [parentId4WEF, setParentId4WEF] = useState(new Date());
   const [designationId, setdesignationId] = useState(0);
-
+  const [designationDData, setdesignationDData] = useState([]);
   const [officeLevelId, setOfficeLevelId] = useState(0);
+  const [officeLevelDData, setOfficeLevelDData] = useState([]);
   const [rtiDesigId, setRtiDesigId] = useState(0);
+  const [rtiDesigDData, setRtiDesigDData] = useState([]);
   const [rtiJuris, setRtiJuris] = useState("");
   const [jurisdiction, setJurisDiction] = useState("");
   const [comment, setComment] = useState("");
@@ -60,13 +66,94 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
   };
 
   // Convert the "updateby" field to an integer
+  
   const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
+  }
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
   } else {
     console.log(`'updateby' as integer: ${updateByInt}`);
   }
+
+
+
+  const handleOfficeTypeChange = (event) => {
+    setofficeTypeId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllOfficeType = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}OfficeType/GetOfficeType`
+    );
+    setOfficeTypeDropdownData(result.data);
+  };
+
+  const handleStateChange = (event) => {
+    setStateId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllState = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}State/GetState`
+    );
+    setStateDData(result.data);
+  };
+  const handleDisttChange = (event) => {
+    setDisttId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllDistt = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}District/GetDistrict`
+    );
+    setDisttDData(result.data);
+  };
+
+
+  const handleDesignationChange = (event) => {
+    setdesignationId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllDesignation = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}Designation/GetDesignation`
+    );
+    setdesignationDData(result.data);
+  };
+
+
+
+  const handlertiDesignationChange = (event) => {
+    setRtiDesigId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllRtiDesignation = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}RTIDesignation/GetRTIDesignation`
+    );
+    setRtiDesigDData(result.data);
+  };
+
+
+
+
+
+  const handleOfficeLevelChange = (event) => {
+    setOfficeLevelId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllOfficeLevel = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}OfficeLevel/GetOfficeLevel`
+    );
+    setOfficeLevelDData(result.data);
+  };
 
   const [updateon, setupdateon] = useState(new Date()); // initialize with current date and time
 
@@ -77,13 +164,33 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
 
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+    // getAllTitle();
+    //getAllOfficeType();
+    getAllDesignation();
+    getAllOfficeType();
+    getAllState();
+    getAllDistt();
+    getAllOfficeLevel();
+    getAllRtiDesignation();
+    fetchIp();
+    // setDepartmentByPayerDropdownData(departmentByPayer);
+    // setContactNoWarningDropdownData(contactNoWarning);
+    // setContactNoMattersDropdownData(contactNoMatters);
+    // setContactNoReportsDropdownData(contactNoReports);
+    // setStatusDropdownData(status);
+  }, []);
+
+
+
   useEffect(() => {
     mode = location.state.mode;
     officeData = location.state.officeData;
     setPageMode(mode);
 
     if (mode === Modes.edit) {
-      setOfficeTypeId(officeData.officeTypeId);
+      setofficeTypeId(officeData.officeTypeId);
       setOfficeName(officeData.officeName);
       setOfficeNameHindi(officeData.officeNameHindi);
       setOfficeCode(officeData.officeCode);
@@ -169,7 +276,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
         updateOfficeTypeId: updateOfficeTypeId,
         updateOfficeId: updateOfficeId,
         updateon: updateon,
-        ipAddress: "0",
+        ipAddress: ipAddress,
       };
 
       if (pageMode === Modes.create) {
@@ -210,25 +317,22 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
       <div className="MainDiv">
         <hr />
         <h1>{pageMode === Modes.create ? "Add New" : "Edit"} Office</h1>
-        <div className="mb-3 A1">
-          <label for="exampleFormControlInput1" className="form-label" required>
-            OfficeTypeId
+        <div class="mb-3 A1">
+          <label for="inputEmail3" class="form-label">
+            Office Type
           </label>
-          {officeError && (
-            <p style={{ color: "red", fontSize: "15px" }}>*{officeError}</p>
-          )}
-          <input
-            required="this field required"
-            type="email"
+
+          <Select
+
             value={officeTypeId}
-            onChange={(e) => {
-              setOfficeTypeId(e.target.value);
-              setofficeError("");
-            }}
+            onChange={handleOfficeTypeChange}
+            inputProps={{ "aria-label": "Without label" }}
             className="form-control"
-            id="exampleFormControlInput1"
-            placeholder="Enter value here"
-          />
+          >
+            {officeTypeDropdownData.map((ele) => {
+              return <MenuItem value={ele.officeTypeId}>{ele.officeTypeName}</MenuItem>;
+            })}
+          </Select>
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
@@ -236,6 +340,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -250,6 +355,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -264,6 +370,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -278,6 +385,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -288,31 +396,37 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
-            State Id
+            State
           </label>
 
-          <input
-            placeholder="enter value here"
-            type="text"
-            class="form-control"
-            id="inputEmail3"
+          <Select
+
             value={stateId}
-            onChange={(e) => setStateId(e.target.value)}
-          />
+            onChange={handleStateChange}
+            inputProps={{ "aria-label": "Without label" }}
+            className="form-control"
+          >
+            {stateDData.map((ele) => {
+              return <MenuItem value={ele.stateId}>{ele.stateName}</MenuItem>;
+            })}
+          </Select>
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
-            Distt Id
+            District
           </label>
 
-          <input
-            placeholder="enter value here"
-            type="text"
-            class="form-control"
-            id="inputEmail3"
+          <Select
+
             value={disttId}
-            onChange={(e) => setDisttId(e.target.value)}
-          />
+            onChange={handleDisttChange}
+            inputProps={{ "aria-label": "Without label" }}
+            className="form-control"
+          >
+            {disttDData.map((ele) => {
+              return <MenuItem value={ele.disttId}>{ele.distName}</MenuItem>;
+            })}
+          </Select>
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
@@ -320,6 +434,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -334,6 +449,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -348,6 +464,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -362,6 +479,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -376,6 +494,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -390,6 +509,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -404,6 +524,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -418,6 +539,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -432,6 +554,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -446,6 +569,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -460,6 +584,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -474,6 +599,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -488,6 +614,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -502,6 +629,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -512,45 +640,54 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
-            Designation Id
+            Designation
           </label>
 
-          <input
-            placeholder="enter value here"
-            type="text"
-            class="form-control"
-            id="inputEmail3"
+          <Select
+
             value={designationId}
-            onChange={(e) => setdesignationId(e.target.value)}
-          />
+            onChange={handleDesignationChange}
+            inputProps={{ "aria-label": "Without label" }}
+            className="form-control"
+          >
+            {designationDData.map((ele) => {
+              return <MenuItem value={ele.designationId}>{ele.designationName}</MenuItem>;
+            })}
+          </Select>
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
-            Office Level Id
+            Office Level
           </label>
 
-          <input
-            placeholder="enter value here"
-            type="text"
-            class="form-control"
-            id="inputEmail3"
+          <Select
+
             value={officeLevelId}
-            onChange={(e) => setOfficeLevelId(e.target.value)}
-          />
+            onChange={handleOfficeLevelChange}
+            inputProps={{ "aria-label": "Without label" }}
+            className="form-control"
+          >
+            {officeLevelDData.map((ele) => {
+              return <MenuItem value={ele.officeLevelId}>{ele.officeLevel}</MenuItem>;
+            })}
+          </Select>
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
-            RTI Designation Id
+            RTI Designation
           </label>
 
-          <input
-            placeholder="enter value here"
-            type="text"
-            class="form-control"
-            id="inputEmail3"
+          <Select
+
             value={rtiDesigId}
-            onChange={(e) => setRtiDesigId(e.target.value)}
-          />
+            onChange={handlertiDesignationChange}
+            inputProps={{ "aria-label": "Without label" }}
+            className="form-control"
+          >
+            {rtiDesigDData.map((ele) => {
+              return <MenuItem value={ele.rtiDesigId}>{ele.rtiDesignation}</MenuItem>;
+            })}
+          </Select>
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
@@ -558,6 +695,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -572,6 +710,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -586,6 +725,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -600,6 +740,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -650,6 +791,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -664,6 +806,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -672,7 +815,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
             onChange={(e) => setUpdateOfficeId(e.target.value)}
           />
         </div>
-        <div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             ipAddress
           </label>
@@ -685,7 +828,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
             value={ipAddress}
             onChange={(e) => setipAddress(e.target.value)}
           />
-        </div>
+        </div> */}
         {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
           updateby

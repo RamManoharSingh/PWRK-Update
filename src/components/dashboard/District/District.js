@@ -211,49 +211,26 @@ export default function EnhancedTable() {
   const [searchValue, setSearchValue] = useState("");
   const [baseApiData, setBaseApiData] = useState([]);
 
-  // useEffect(() => {
-  //   let tempData = baseApiData.map((ele) => {
-  //     if (!ele.title) ele.title = "";
-  //     if (!ele.employeeID) ele.employeeID = 0;
-  //     if (!ele.bcNumber) ele.bcNumber = "";
-  //     if (!ele.firstName) ele.firstName = "";
-  //     if (!ele.lastName) ele.lastName = "";
-  //     if (!ele.bcResourceNumber) ele.bcResourceNumber = "";
-  //     if (!ele.telephone) ele.telephone = "";
-  //     if (!ele.email) ele.email = "";
-  //     if (!ele.initials) ele.initials = "";
-  //     if (!ele.employmentStatusName) ele.employmentStatusName = "";
-  //     if (!ele.techniques) ele.techniques = "";
-  //     if (!ele.linkToUrlSubjectMapNDT) ele.linkToUrlSubjectMapNDT = "";
-  //     if (!ele.linkToUrlSubjectMapWeldingN3)
-  //       ele.linkToUrlSubjectMapWeldingN3 = "";
-  //     if (!ele.competenceMatrixData) ele.competenceMatrixData = [];
-  //     return ele;
-  //   });
-  //   let lsearchText = searchValue.toLowerCase();
-  //   let filteredData = tempData.filter(
-  //     (x) =>
-  //       x.title.toLowerCase().includes(lsearchText) ||
-  //       x.firstName.toLowerCase().includes(lsearchText) ||
-  //       x.lastName.toLowerCase().includes(lsearchText) ||
-  //       x.email.toLowerCase().includes(lsearchText) ||
-  //       x.initials.toLowerCase().includes(lsearchText) ||
-  //       x.employmentStatusName.toLowerCase().includes(lsearchText) ||
-  //       x.techniques.toLowerCase().includes(lsearchText) ||
-  //       x.linkToUrlSubjectMapNDT.toLowerCase().includes(lsearchText) ||
-  //       x.linkToUrlSubjectMapWeldingN3.toLowerCase().includes(lsearchText) ||
-  //       x.bcNumber.includes(lsearchText) ||
-  //       x.employeeID.includes(searchValue) ||
-  //       x.bcResourceNumber.includes(lsearchText) ||
-  //       x.telephone.includes(lsearchText) ||
-  //       x.competenceMatrixData.filter((e) =>
-  //         e.name.toLowerCase().includes(lsearchText)
-  //       ).length > 0
-  //   );
-  //   console.log(filteredData, "filtered data");
-  //   console.log("searchValue", searchValue);
-  //   setRows(filteredData);
-  // }, [searchValue]);
+  useEffect(() => {
+    let tempData = baseApiData.map((ele) => {
+      if (!ele.distName) ele.distName = "";
+      if (!ele.distShortName) ele.distShortName = 0;
+      if (!ele.competenceMatrixData) ele.competenceMatrixData = [];
+      return ele;
+    });
+    let lsearchText = searchValue.toLowerCase();
+    let filteredData = tempData.filter(
+      (x) =>
+        x.distName.toLowerCase().includes(lsearchText) ||
+        x.distShortName.toLowerCase().includes(lsearchText) ||
+        x.competenceMatrixData.filter((e) =>
+          e.name.toLowerCase().includes(lsearchText)
+        ).length > 0
+    );
+    console.log(filteredData, "filtered data");
+    console.log("searchValue", searchValue);
+    setRows(filteredData);
+  }, [searchValue]);
 
   const handleModal = async (disttId) => {
     setOpen((prevState) => !prevState);
@@ -382,7 +359,7 @@ export default function EnhancedTable() {
             height: "48px",
             borderRadius: "20px",
             float: "right",
-            textAlign: "left",
+            textAlign: "center",
           }}
           onChange={(e) => setSearchValue(e.target.value)}
         ></input>

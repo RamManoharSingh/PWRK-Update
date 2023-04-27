@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -17,7 +18,7 @@ const CreateDesignation = ({ mode, setCreationState, designationData }) => {
   //   const [designationId, setdesignationId] = useState(0);
   const [pageMode, setPageMode] = useState("create");
   const [officeTypeId, setofficeTypeId] = useState("");
-
+  const [officeTypeDropdownData, setOfficeTypeDropdownData] = useState([]);
   const [officeTypeError, setOfficeTypeError] = useState("");
   const [designationName, setdesignationName] = useState("");
   const [designationNameError, setDesignationNameError] = useState("");
@@ -36,12 +37,32 @@ const CreateDesignation = ({ mode, setCreationState, designationData }) => {
 
   // Convert the "updateby" field to an integer
   const updateByInt = parseInt(jsonData.updateby);
+  const fetchIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    setipAddress(res.data.IPv4)
+  }
+
 
   if (isNaN(updateByInt)) {
     console.log("Error: Invalid value for 'updateby'");
   } else {
     console.log(`'updateby' as integer: ${updateByInt}`);
   }
+
+
+  const handleOfficeTypeChange = (event) => {
+    setofficeTypeId(event.target.value);
+    //setUserNameError("");
+  };
+  const getAllOfficeType = async () => {
+    let result = await Axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}OfficeType/GetOfficeType`
+    );
+    setOfficeTypeDropdownData(result.data);
+  };
+
+
 
   const [updateon, setupdateon] = useState(new Date()); // initialize with current date and time
 
@@ -51,6 +72,26 @@ const CreateDesignation = ({ mode, setCreationState, designationData }) => {
   console.log(jsonObject.isActive);
 
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    fetchIp();
+    // getAllTitle();
+    //getAllOfficeType();
+    //getAllDesignation();
+    getAllOfficeType();
+
+    //getAllDistt();
+    // getAllAccountingStatus();
+    // getAllStatus();
+    // setDepartmentByPayerDropdownData(departmentByPayer);
+    // setContactNoWarningDropdownData(contactNoWarning);
+    // setContactNoMattersDropdownData(contactNoMatters);
+    // setContactNoReportsDropdownData(contactNoReports);
+    // setStatusDropdownData(status);
+  }, []);
+
+
 
   useEffect(() => {
     mode = location.state.mode;
@@ -180,29 +221,22 @@ const CreateDesignation = ({ mode, setCreationState, designationData }) => {
       <div className="MainDiv">
         <hr />
         <h1>{pageMode === Modes.create ? "Add New" : "Edit"} Designation</h1>
-        <div className="mb-3 A1">
-          <label for="exampleFormControlInput1" className="form-label" required>
-            Office Type Id
+        <div class="mb-3 A1">
+          <label for="inputEmail3" class="form-label">
+            Office Type
           </label>
-          {officeTypeError && (
-            <p style={{ color: "red", fontSize: "15px" }}>
-              *{officeTypeError}
-            </p>
-          )}
-          <input
 
+          <Select
 
-            type="number"
             value={officeTypeId}
-            onChange={(e) => {
-              setofficeTypeId(e.target.value);
-              setOfficeTypeError("");
-
-            }}
+            onChange={handleOfficeTypeChange}
+            inputProps={{ "aria-label": "Without label" }}
             className="form-control"
-            id="exampleFormControlInput1"
-            placeholder="Enter value here"
-          />
+          >
+            {officeTypeDropdownData.map((ele) => {
+              return <MenuItem value={ele.officeTypeId}>{ele.officeTypeName}</MenuItem>;
+            })}
+          </Select>
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
@@ -252,6 +286,7 @@ const CreateDesignation = ({ mode, setCreationState, designationData }) => {
           </label>
 
           <input
+          autocomplete="off"
             placeholder="enter value here"
             type="number"
             class="form-control"
@@ -262,6 +297,7 @@ const CreateDesignation = ({ mode, setCreationState, designationData }) => {
         </div>
         <div class="form-check">
           <input
+          autocomplete="off"
             style={{
               marginLeft: 17,
               width: 20,
@@ -278,7 +314,7 @@ const CreateDesignation = ({ mode, setCreationState, designationData }) => {
             IsActive
           </label>
         </div>
-        <div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             ipAddress
           </label>
@@ -297,7 +333,7 @@ const CreateDesignation = ({ mode, setCreationState, designationData }) => {
 
             }}
           />
-        </div>
+        </div> */}
         {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
           updateby

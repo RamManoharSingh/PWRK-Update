@@ -20,6 +20,7 @@ import { Login } from "../../dashboard/Login/login";
 export default function Header(props) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState();
+  let userName = localStorage.getItem("UserName");
   // useEffect(() => {
   //   axios
   //     .get(`http://122.176.101.76:8098/api/UserProfile/Get/${props.Userid}`)
@@ -95,7 +96,7 @@ export default function Header(props) {
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic">
                   <AdminPanelSettingsIcon />
-                  Admin
+                  {userName}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
