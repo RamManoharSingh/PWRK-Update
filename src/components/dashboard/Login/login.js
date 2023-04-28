@@ -31,7 +31,7 @@ const Login = (props) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     let payload = {
-      userName: userName,
+      loginId: userName,
       password: password,
       // loginId: loginId
     };

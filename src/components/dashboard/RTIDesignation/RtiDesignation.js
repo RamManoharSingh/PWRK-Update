@@ -346,7 +346,7 @@ export default function EnhancedTable() {
             height: "48px",
             borderRadius: "20px",
             float: "right",
-            textAlign: "left",
+            textAlign: "center",
           }}
           onChange={(e) => setSearchValue(e.target.value)}
         ></input>

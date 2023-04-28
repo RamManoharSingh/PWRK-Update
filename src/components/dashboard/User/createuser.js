@@ -297,6 +297,31 @@ const Createuser = ({ mode, setCreationState, userData }) => {
       <div className="MainDiv">
         <hr />
         <h1>{pageMode === Modes.create ? "Add New" : "Edit"} User</h1>
+
+
+        <div class="mb-3 A1">
+          <label for="inputEmail3" class="form-label">
+            User Id
+          </label>
+          {/* {userId ? (
+            <p style={{ color: "red", fontSize: "15px" }}>*{userNameError}</p>
+          ) : (
+            <p></p>
+          )} */}
+          <input
+            autocomplete="off"
+            placeholder="enter value here"
+            type="text"
+            class="form-control"
+            value={userId}
+            onChange={(e) => {
+              setUserId(e.target.value);
+              // setUserNameError("");
+            }}
+          />
+        </div>
+
+
         <div className="mb-3 A1">
           <label for="exampleFormControlInput1" className="form-label" required>
             Employee Id
@@ -307,6 +332,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <input
+            disabled
             autocomplete="off"
             required="this field required"
             type="email"
@@ -330,6 +356,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <Select
+            disabled
             value={officeTypeId}
             onChange={handleOfficeTypeChange}
             inputProps={{ "aria-label": "Without label" }}
@@ -354,6 +381,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <Select
+            disabled
             value={titleId}
             onChange={handleTitleChange}
             inputProps={{ "aria-label": "Without label" }}
@@ -374,6 +402,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <input
+            disabled
             autocomplete="off"
             placeholder="enter value here"
             type="text"
@@ -397,6 +426,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             <p></p>
           )}
           <Select
+            disabled
             value={designationId}
             onChange={handleDesignationChange}
             inputProps={{ "aria-label": "Without label" }}
@@ -417,7 +447,6 @@ const Createuser = ({ mode, setCreationState, userData }) => {
           </label>
           <input
             autocomplete="off"
-            disabled
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -467,7 +496,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
         </div>
         <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
-            Registered Address
+            Residence Address
           </label>
           {resiAddError ? (
             <p style={{ color: "red", fontSize: "15px" }}>*{resiAddError}</p>
@@ -542,7 +571,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             }}
           />
         </div>
-        <div class="mb-3 A1">
+        {/* <div class="mb-3 A1">
           <label for="inputEmail3" class="form-label">
             Login Id
           </label>
@@ -569,7 +598,7 @@ const Createuser = ({ mode, setCreationState, userData }) => {
             value={ipAddress}
             onChange={(e) => setIpAddress(e.target.value)}
           />
-        </div>
+        </div> */}
         <button
 
           type="button"

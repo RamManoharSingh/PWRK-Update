@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import axios from "axios";
 import routeNames from "../../../routes/routeName";
 import { Modes } from "../../common/Constants/Modes";
 import { useLocation } from "react-router-dom";
@@ -66,7 +67,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
   };
 
   // Convert the "updateby" field to an integer
-  
+
   const updateByInt = parseInt(jsonData.updateby);
   const fetchIp = async () => {
     const res = await axios.get('https://geolocation-db.com/json/')
@@ -340,7 +341,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -355,7 +356,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -370,7 +371,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -385,7 +386,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -434,7 +435,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -449,7 +450,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -464,7 +465,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -479,7 +480,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -494,7 +495,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -509,7 +510,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -524,7 +525,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -539,7 +540,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -554,7 +555,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -569,7 +570,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -584,7 +585,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -599,7 +600,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -614,7 +615,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -629,7 +630,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -695,7 +696,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -710,7 +711,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -725,7 +726,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -740,7 +741,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -791,7 +792,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
@@ -806,7 +807,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
           </label>
 
           <input
-          autocomplete="off"
+            autocomplete="off"
             placeholder="enter value here"
             type="text"
             class="form-control"
