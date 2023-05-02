@@ -47,7 +47,7 @@ const CreateOffice = ({ mode, setCreationState, officeData }) => {
   const [parentId4WEF, setParentId4WEF] = useState(new Date());
   const [designationId, setdesignationId] = useState(0);
   const [designationDData, setdesignationDData] = useState([]);
-  const [officeLevelId, setOfficeLevelId] = useState(0);
+  const [officeLevelId, setOfficeLevelId] = useState(null);
   const [officeLevelDData, setOfficeLevelDData] = useState([]);
   const [rtiDesigId, setRtiDesigId] = useState(0);
   const [rtiDesigDData, setRtiDesigDData] = useState([]);

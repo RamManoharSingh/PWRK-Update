@@ -3,9 +3,12 @@ import Parse from "parse/dist/parse.min.js";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate, Link } from "react-router-dom";
-import routeNames from "../../../routes/routeName";
+import Routes from "../../../routes/routeName";
 import { Alert } from "react-bootstrap";
 import { ClassSharp } from "@mui/icons-material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { Col, Row, Form, Card, Button, Container, InputGroup } from '@themesberg/react-bootstrap';
 
 export const ForgotPassword = (props) => {
   // State variables
@@ -20,9 +23,14 @@ export const ForgotPassword = (props) => {
         )
         .then((res) => {
           Swal.fire(res.data);
-          navigate(routeNames.LOGIN);
+          navigate(Routes.LOGIN);
         })
         .catch((err) => {
+          Swal.fire(
+            "Password Reset Link sent on your Mail",
+            "Plese check your Mail",
+            "Success"(email)
+          );
           console.log(err);
         });
     } else {
@@ -64,42 +72,35 @@ export const ForgotPassword = (props) => {
     }
   };
   return (
-    <div className="Auth-form-container1">
-      <form
-        className="Auth-form"
-        onSubmit={(e) => {
-          handleReset(e);
-        }}
-      >
-        <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Forgot Password</h3>
-          {error !== "" ? (
-            <Alert key={"danger"} variant={"danger"}>
-              {error}
-            </Alert>
-          ) : (
-            <div></div>
-          )}
-          <div className="form-group mt-3">
-            <label>Email address</label>
-            <input
-              style={{ width: 324 }}
-              type="email"
-              className="form-control mt-1"
-              placeholder="Enter email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="d-grid gap-2 mt-3">
-            <button className="btn btn-primary" onClick={(e) => handleReset(e)}>
-              Send Mail
-            </button>
-            <p className="forgot-password text-right mt-2">
-              <Link to={routeNames.LOGIN}> Login</Link>
+    <main>
+      <section className="vh-lg-100 mt-4 mt-lg-0 bg-soft d-flex align-items-center">
+        <Container>
+          <Row className="justify-content-center">
+            <p className="text-center">
+              <Card.Link as={Link} to={Routes.LOGIN} className="text-gray-700">
+                <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to sign in
+              </Card.Link>
             </p>
-          </div>
-        </div>
-      </form>
-    </div>
+            <Col xs={12} className="d-flex align-items-center justify-content-center">
+              <div className="signin-inner my-3 my-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
+                <h3>Forgot your password?</h3>
+                <p className="mb-4">Don't fret! Just type in your email and we will send you a code to reset your password!</p>
+                <Form onSubmit={handleReset}>
+                  <div className="mb-4">
+                    <Form.Label htmlFor="email">Your Email</Form.Label>
+                    <InputGroup id="email">
+                      <Form.Control autoFocus required type="text" placeholder="example@company.com" onChange={(e) => setEmail(e.target.value)} />
+                    </InputGroup>
+                  </div>
+                  <Button variant="primary" type="submit" className="w-100">
+                    Recover password
+                  </Button>
+                </Form>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+    </main>
   );
 };

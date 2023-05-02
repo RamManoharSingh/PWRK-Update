@@ -41,6 +41,7 @@ import Role from "../components/dashboard/Role/role";
 import OfficeAccountDetails from "../components/dashboard/OfficeAccountDetails/officeAccountDetails";
 import CreateOfficeAccountDetails from "../components/dashboard/OfficeAccountDetails/CreateOfficeAccountDetails";
 import OtherOffice from "../components/dashboard/OtherOffice/otherOffice";
+import ChangePassword from "../components/dashboard/ChangePassword/ChangePassword";
 
 // import { User } from "parse";
 export default function Router() {
@@ -124,6 +125,7 @@ export default function Router() {
           element={<CreateOfficeAccountDetails />}
         />
         <Route path={routeNames.OTHEROFFICE} element={<OtherOffice />} />
+        <Route path={routeNames.CHANGEPASSWORD} element={<ChangePassword />} />
       </Route>
     </Routes>
   );

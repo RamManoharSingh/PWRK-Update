@@ -389,42 +389,37 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     let tempData = baseApiData.map((ele) => {
-      if (!ele.title) ele.title = "";
-      if (!ele.employeeID) ele.employeeID = 0;
-      if (!ele.bcNumber) ele.bcNumber = "";
-      if (!ele.firstName) ele.firstName = "";
-      if (!ele.lastName) ele.lastName = "";
-      if (!ele.bcResourceNumber) ele.bcResourceNumber = "";
-      if (!ele.telephone) ele.telephone = "";
-      if (!ele.email) ele.email = "";
-      if (!ele.initials) ele.initials = "";
-      if (!ele.employmentStatusName) ele.employmentStatusName = "";
-      if (!ele.techniques) ele.techniques = "";
-      if (!ele.linkToUrlSubjectMapNDT) ele.linkToUrlSubjectMapNDT = "";
-      if (!ele.linkToUrlSubjectMapWeldingN3)
-        ele.linkToUrlSubjectMapWeldingN3 = "";
-      if (!ele.competenceMatrixData) ele.competenceMatrixData = [];
+      if (!ele.officeName) ele.officeName = "";
+      if (!ele.officeNameHindi) ele.officeNameHindi = "";
+      if (!ele.address) ele.address = "";
+      if (!ele.stateId) ele.stateId = 0;
+      if (!ele.disttId) ele.disttId = 0;
+      if (!ele.emailId) ele.emailId = "";
+      if (!ele.jurisdiction) ele.jurisdiction = "";
+      if (!ele.officeCode) ele.officeCode = "";
+      if (!ele.officeId) ele.officeId = 0;
+      if (!ele.officeName) ele.officeName = "";
+      if (!ele.rtiJuris) ele.rtiJuris = "";
+
+
+
       return ele;
     });
     let lsearchText = searchValue.toLowerCase();
     let filteredData = tempData.filter(
       (x) =>
-        x.title.toLowerCase().includes(lsearchText) ||
-        x.firstName.toLowerCase().includes(lsearchText) ||
-        x.lastName.toLowerCase().includes(lsearchText) ||
-        x.email.toLowerCase().includes(lsearchText) ||
-        x.initials.toLowerCase().includes(lsearchText) ||
-        x.employmentStatusName.toLowerCase().includes(lsearchText) ||
-        x.techniques.toLowerCase().includes(lsearchText) ||
-        x.linkToUrlSubjectMapNDT.toLowerCase().includes(lsearchText) ||
-        x.linkToUrlSubjectMapWeldingN3.toLowerCase().includes(lsearchText) ||
-        x.bcNumber.includes(lsearchText) ||
-        x.employeeID.includes(searchValue) ||
-        x.bcResourceNumber.includes(lsearchText) ||
-        x.telephone.includes(lsearchText) ||
-        x.competenceMatrixData.filter((e) =>
-          e.name.toLowerCase().includes(lsearchText)
-        ).length > 0
+        x.officeName.toLowerCase().includes(lsearchText) ||
+        x.officeNameHindi.toLowerCase().includes(lsearchText) ||
+        x.address.toLowerCase().includes(lsearchText) ||
+        x.stateId.includes(lsearchText) ||
+        x.disttId.includes(lsearchText) ||
+        x.emailId.toLowerCase().includes(lsearchText) ||
+        x.jurisdiction.toLowerCase().includes(lsearchText) ||
+        x.officeCode.includes(lsearchText) ||
+        x.officeId.includes(lsearchText) ||
+        x.officeName.includes(lsearchText) ||
+        x.rtiJuris.includes(searchValue)
+
     );
     console.log(filteredData, "filtered data");
     console.log("searchValue", searchValue);

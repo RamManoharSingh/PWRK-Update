@@ -53,9 +53,10 @@ const routeNames = {
   ROLE: "/role",
   CREATEROLE: "/createrole",
   EDITUSER: "/ user/edit",
-  OFFICEACCOUNTDETAILS:"/officeaccountdetails",
-  CREATEOFFICEACCOUNTDETAILS:"/createofficeaccountdetails",
-  OTHEROFFICE:"/otheroffice",
+  OFFICEACCOUNTDETAILS: "/officeaccountdetails",
+  CREATEOFFICEACCOUNTDETAILS: "/createofficeaccountdetails",
+  OTHEROFFICE: "/otheroffice",
+  CHANGEPASSWORD: "/changepassword",
   // EDITUSER: "/ user/edit",
 };
 export default routeNames;

@@ -20,6 +20,9 @@ export default function Sidebar() {
     setRoleId(role);
     console.log(RoleId, role)
   }, []);
+
+  let resiAdd = localStorage.getItem("ResiAdd");
+  let address = localStorage.getItem("Address");
   const toggleSidebar = (sidebar) => {
     setActive(sidebar);
 
@@ -41,7 +44,7 @@ export default function Sidebar() {
               <i className="fas fa-laugh-wink" />
             </div>
             <div className="sidebar-brand-text mx-3">
-              User Module Office Gurugram
+              {resiAdd} {address}
             </div>
           </Link>
           <li

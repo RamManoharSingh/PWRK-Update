@@ -18,11 +18,11 @@ const CreateOfficeLevel = ({ mode, setCreationState, officeLevelData }) => {
 
   //   const [designationId, setdesignationId] = useState(0);
   const [pageMode, setPageMode] = useState("create");
-  const [id, setId] = useState(0);
+  //const [id, setId] = useState(0);
   const [officeTypeid, setOfficeTypeId] = useState(0);
   const [officeTypeDropdownData, setOfficeTypeDropdownData] = useState([]);
 
-  const [officeLevelId, setOfficeLevelId] = useState(0);
+  const [officeLevelId, setOfficeLevelId] = useState(null);
   const [officeLevel, setOfficeLevel] = useState("");
 
   const [ipAddress, setIpAddress] = useState("");
@@ -75,7 +75,7 @@ const CreateOfficeLevel = ({ mode, setCreationState, officeLevelData }) => {
     setPageMode(mode);
 
     if (mode === Modes.edit) {
-      setId(officeLevelData.id);
+      //setId(officeLevelData.id);
       setOfficeTypeId(officeLevelData.officeTypeid);
       setOfficeLevelId(officeLevelData.officeLevelId);
       setOfficeLevel(officeLevelData.officeLevel);
@@ -98,7 +98,7 @@ const CreateOfficeLevel = ({ mode, setCreationState, officeLevelData }) => {
 
     if (true) {
       const payload = {
-        id: id,
+       // id: id,
         officeTypeid: officeTypeid,
         officeLevelId: officeLevelId,
         officeLevel: officeLevel,
