@@ -27,11 +27,11 @@ export const ForgotPassword = (props) => {
         })
         .catch((err) => {
           Swal.fire(
-            "Password Reset Link sent on your Mail",
-            "Plese check your Mail",
-            "Success"(email)
+            "Your mail is not valid !",
+            "Plese enter your registered Email",
+            "warning"
           );
-          console.log(err);
+
         });
     } else {
       console.log(validateEmail(email));
